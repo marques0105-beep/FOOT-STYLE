@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOOT STYLE - Catálogo</title>
+</head>
+<body>
+    <h1>Catálogo de Sapatilhas</h1>
+    <ul>
+        {% for produto in produtos %}
+            <li>
+                <strong>{{ produto.marca }} - {{ produto.modelo }}</strong> ({{ produto.preco }}€)
+                <ul>
+                    {% for tamanho, quantidade in produto.stocks.items() %}
+                        <li>Tamanho {{ tamanho }}: {{ quantidade }} disponíveis</li>
+                    {% endfor %}
+                </ul>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
