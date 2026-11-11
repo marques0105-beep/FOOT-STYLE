@@ -1,4 +1,3 @@
-# Importa as ferramentas necessárias do Flask:
 from flask import Flask, jsonify, render_template
 
 # Inicializa a aplicação Flask
@@ -17,7 +16,6 @@ produtos = [
             "42": 2
         }
     },
-
     {
         "id": 2,
         "marca": "Adidas",
@@ -31,28 +29,56 @@ produtos = [
     }
 ]
 
-# Rota API para listar todos os produtos em formato JSON
+
+# Rota API para listar todos os produtos
 @app.get("/produtos")
 def listar_produtos():
     return jsonify(produtos)
 
-# Rota API para obter os detalhes de um único produto específico através do seu ID
+
+# Rota API para consultar um produto pelo ID
 @app.get("/produtos/<int:produto_id>")
 def obter_produto(produto_id):
-    # Procura na lista o produto que tem o ID correspondente
-    produto = next((p for p in produtos if p["id"] == produto_id), None)
 
-# Se o produto não existir, retorna um erro 404
+    produto = next(
+        (p for p in produtos if p["id"] == produto_id),
+        None
+    )
+
     if not produto:
         return jsonify({"erro": "Produto não encontrado"}), 404
+
     return jsonify(produto)
 
-# Rota para a página principal (Interface Web simples)
+
+# Rota API para consultar stock de um tamanho específico
+@app.get("/produtos/<int:produto_id>/stock/<int:tamanho>")
+def consultar_stock(produto_id, tamanho):
+
+    produto = next(
+        (p for p in produtos if p["id"] == produto_id),
+        None
+    )
+
+    if not produto:
+        return jsonify({"erro": "Produto não encontrado"}), 404
+
+    quantidade = produto["stocks"].get(str(tamanho), 0)
+
+    return jsonify({
+        "produto": produto["modelo"],
+        "tamanho": tamanho,
+        "stock": quantidade,
+        "disponivel": quantidade > 0
+    })
+
+
+# Rota para apresentar a página principal
 @app.get("/")
 def pagina_inicial():
-    # Renderiza o ficheiro HTML e envia a lista de produtos para lá
     return render_template("index.html", produtos=produtos)
 
-# Inicia o servidor Flask quando o script é executado diretamente
+
+# Inicia o servidor Flask
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

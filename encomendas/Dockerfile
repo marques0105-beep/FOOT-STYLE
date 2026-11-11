@@ -1,10 +1,11 @@
-FROM python:3.12
+FROM python:3.12-slim
 
-RUN pip install Flask requests      
+WORKDIR /app
 
-COPY main.py /main.py
+RUN pip install flask requests
 
-COPY templates /templates
+COPY main.py .
 
-CMD ["python", "/main.py"]
+EXPOSE 5000
 
+CMD ["python", "main.py"]

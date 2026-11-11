@@ -1,30 +1,45 @@
+
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FOOT STYLE - Catálogo</title>
 </head>
+
 <body>
+
     <h1>Catálogo de Sapatilhas</h1>
-    
-    <!-- Lista principal que vai conter os produtos -->
+
     <ul>
-        <!-- Ciclo (Loop) Jinja2 para percorrer cada produto enviado pelo Flask -->
         {% for produto in produtos %}
+
             <li>
-                <!-- Mostra a marca, modelo e preço do produto atual -->
-                <strong>{{ produto.marca }} - {{ produto.modelo }}</strong> ({{ produto.preco }}€)
-                
-                <!-- Sub-lista para mostrar os tamanhos e o stock correspondente -->
+
+                <strong>
+                    {{ produto.marca }} - {{ produto.modelo }}
+                </strong>
+
+                ({{ produto.preco }}€)
+
                 <ul>
-                    <!-- Ciclo aninhado para percorrer o dicionário de stocks (tamanho e quantidade) -->
+
                     {% for tamanho, quantidade in produto.stocks.items() %}
-                        <li>Tamanho {{ tamanho }}: {{ quantidade }} disponíveis</li>
+
+                        <li>
+                            Tamanho {{ tamanho }}:
+                            {{ quantidade }} disponíveis
+                        </li>
+
                     {% endfor %}
+
                 </ul>
+
             </li>
+
         {% endfor %}
     </ul>
+
 </body>
 </html>
